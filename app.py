@@ -4,7 +4,7 @@ from flask import Flask, render_template, redirect, flash, request
 
 from flask_debugtoolbar import DebugToolbarExtension
 
-from forms import AddPetForm
+from forms import AddPetForm, EditPetForm
 from models import db, connect_db, Pet
 
 app = Flask(__name__)
@@ -14,6 +14,7 @@ app.config['SECRET_KEY'] = "secret"
 app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql:///adopt"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = True
+app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 
 connect_db(app)
 
@@ -58,3 +59,23 @@ def add_pet():
 
     else:
         return render_template('add_pet_form.html', form=form)
+
+@app.route('/<int:pet_id>', methods=["GET","POST"])
+def show_pet_info(pet_id):
+    pet = Pet.query.get_or_404(pet_id)
+    form = EditPetForm(obj=pet)
+
+    if form.validate_on_submit():
+        pet.photo_url = form.photo_url.data
+        pet.notes = form.notes.data
+        pet.available = form.available.data
+        db.session.commit()
+        flash(f"<p class='alert alert-success' >{pet.name} Profile Updated!</p>")
+        return redirect(f"/{pet.id}")
+
+    else:
+        return render_template(
+            'pet_profile.html', 
+            pet=pet, 
+            form=form
+        )
