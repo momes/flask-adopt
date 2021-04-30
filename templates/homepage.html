@@ -3,19 +3,20 @@
 {% block title %}Pets{% endblock %}
 
 {% block content %}
-<h1>Pets</h1>
+<h1 class="col-12">Pets</h1>
 
 {% for pet in pets %}
-	<div class="col-3">
+	<div class="col-3 mb-3 mt-3">
         <img src='{{pet.image_url}}' alt='{{pet.name}} has no photo'>
-		<p><span>{{ pet.name }}</span> <b>is 
+		<span>{{ pet.name }}</span> <b>is 
             {% if pet.available %}available{% endif %}
-            {% if not pet.available %}not available{% endif %}</b></p> 
+            {% if not pet.available %}not available{% endif %}</b> 
 	</div>
 {% endfor %}
 
 
-
+<div class="col-12">
 <a href='/add' class='btn btn-primary' role='button'> Add a Pet </a>
+</div>
 
 {% endblock %}
