@@ -3,25 +3,26 @@
 {% block title %}Add a Pet{% endblock %}
 
 {% block content %}
+<div class="row">
+  <h2 class="display-2 col-12 mb-3"> Add a Pet</h2>
+  <form id="add-pet-form" action='/add' method="POST">
 
-<form  id="add-pet-form" action='/add' method="POST">
+    {{ form.hidden_tag() }}
 
-  {{ form.hidden_tag() }}
-
-  {% for field in form
-         if field.widget.input_type != 'hidden' %}
+    {% for field in form
+    if field.widget.input_type != 'hidden' %}
     <p>
       {{ field.label }}
       {{ field }}
 
       {% for error in field.errors %}
-        {{ error }}
+      {{ error }}
       {% endfor %}
     </p>
-  {% endfor %}
+    {% endfor %}
 
-  <button type="submit">Submit</button>
+    <button type="submit">Submit</button>
 
-</form>
-
+  </form>
+</div>
 {% endblock %}

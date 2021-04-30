@@ -7,8 +7,8 @@
 <div class="row">
 {% for pet in pets %}
 	<div class="col-3 mb-3 mt-3">
-        <img src='{{pet.photo_url}}' alt='{{pet.name}} has no photo'>
-		<a href="/{{pet.id}}">
+        <img src='{{ pet.photo_ur l}}' alt='{{ pet.name }} has no photo'>
+		<a href="/{{ pet.id }}">
             <span>{{ pet.name }}</span> <b>is 
             {% if pet.available %}available{% endif %}
             {% if not pet.available %}not available{% endif %}</b> 
