@@ -1,7 +1,7 @@
-from flask import Flask, render_template, redirect, flash, request
+
 from project_secrets import PETFINDER_API_KEY, PETFINDER_SECRET_KEY
 import requests
-from app import app
+from random import choice
 
 def get_api_token():
     resp = requests.post(
@@ -14,11 +14,16 @@ def get_api_token():
     token = token["access_token"]
     return token
 
-def get_random_pets():
+def get_random_pet():
     token = get_api_token()
-    resp = request.get("https://api.petfinder.com/v2/animals",
-    params={"Authorization": f"Bearer {token}", "limit":"100"})
+    resp = requests.get("https://api.petfinder.com/v2/animals",
+    headers={"Authorization": f"Bearer {token}"}, params={"limit":"100"})
 
     animals = resp.json()
-
-    return animals
+    # print(animals["animal"])
+    animal = animals["animals"]
+    random_animal = choice(animal)
+    name = random_animal["name"]
+    photo = random_animal["primary_photo_cropped"]["medium"] if (random_animal["primary_photo_cropped"]) else None
+    age = random_animal["age"]
+    return {"name":name, "photo":photo, "age":age}
